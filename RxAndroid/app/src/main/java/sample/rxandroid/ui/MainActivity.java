@@ -11,6 +11,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import sample.rxandroid.R;
+import sample.rxandroid.network.RestApi;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RestApi.initialize();
 
         Observable.just("one", "two", "three", "four", "five")
                 .map(new Func1<String, Integer>() {

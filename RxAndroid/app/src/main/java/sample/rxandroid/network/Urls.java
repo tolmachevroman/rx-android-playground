@@ -5,5 +5,7 @@ package sample.rxandroid.network;
  */
 public class Urls {
 
-    public static final String US_JOBS_SEARCH = "https://api.usa.gov/jobs/search.json";
+    public static final String ENDPOINT = "https://api.usa.gov";
+
+    public static final String US_JOBS_SEARCH = "/jobs/search.json";
 }
