@@ -1,4 +1,4 @@
-package sample.rxandroid;
+package sample.rxandroid.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import sample.rxandroid.R;
 
 public class MainActivity extends AppCompatActivity {
 
