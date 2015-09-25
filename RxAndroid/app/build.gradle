@@ -28,5 +28,10 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex:rxjava:1.0.14'
 
+    //Retrofit related dependencies
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
+    compile 'com.google.code.gson:gson:2.3.1'
+
 }
