@@ -10,6 +10,7 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
+import rx.Observable;
 
 /**
  * Created by romantolmachev on 25/9/15.
@@ -35,10 +36,10 @@ public class RestApi {
         service = restAdapter.create(RestApiDefinitions.class);
     }
 
-//    public static Observable<List<Job>> searchJobs(String searchQuery) {
-//
-//        return service.getJobs(searchQuery);
-//    }
+    public static Observable<List<Job>> searchJobs(String searchQuery) {
+
+        return service.getJobs(searchQuery);
+    }
 
     public static void searchJobs(String searchQuery, Callback<List<Job>> callback) {
 

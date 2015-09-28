@@ -7,9 +7,9 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import sample.rxandroid.R;
 import sample.rxandroid.network.Job;
 import sample.rxandroid.network.RestApi;
@@ -21,20 +21,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RestApi.searchJobs("nursing+jobs+in+ny", new Callback<List<Job>>() {
-            @Override
-            public void success(List<Job> jobs, Response response) {
-                System.out.println("Jobs found: " + jobs.size());
-                for(Job job : jobs) {
-                    System.out.println(job.getId());
-                }
-            }
+//        RestApi.searchJobs("nursing+jobs+in+ny", new Callback<List<Job>>() {
+//            @Override
+//            public void success(List<Job> jobs, Response response) {
+//                System.out.println("Jobs found: " + jobs.size());
+//                for(Job job : jobs) {
+//                    System.out.println(job.getId());
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                System.out.println("error:" + error.getMessage());
+//            }
+//        });
 
-            @Override
-            public void failure(RetrofitError error) {
-                System.out.println("error:" + error.getMessage());
-            }
-        });
+
+        RestApi.searchJobs("nursing+jobs+in+ny")
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Job>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Job> jobs) {
+                        System.out.println("Jobs found: " + jobs.size());
+                    }
+                });
 
 //        Observable.just("one", "two", "three", "four", "five")
 //                .map(new Func1<String, Integer>() {
