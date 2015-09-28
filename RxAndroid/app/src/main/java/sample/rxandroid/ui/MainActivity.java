@@ -7,8 +7,10 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import sample.rxandroid.R;
 import sample.rxandroid.network.Job;
@@ -40,7 +42,19 @@ public class MainActivity extends AppCompatActivity {
         RestApi.searchJobs("nursing+jobs+in+ny")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Job>>() {
+                .flatMap(new Func1<List<Job>, Observable<Job>>() {
+                    @Override
+                    public Observable<Job> call(List<Job> jobs) {
+                        return Observable.from(jobs);
+                    }
+                })
+                .filter(new Func1<Job, Boolean>() {
+                    @Override
+                    public Boolean call(Job job) {
+                        return job.getMinimum() > 50000;
+                    }
+                })
+                .subscribe(new Subscriber<Job>() {
                     @Override
                     public void onCompleted() {
 
@@ -52,18 +66,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(List<Job> jobs) {
-                        System.out.println("Jobs found: " + jobs.size());
+                    public void onNext(Job job) {
+                        System.out.println("Job: " + job.getPositionTitle());
                     }
                 });
 
-//        Observable.just("one", "two", "three", "four", "five")
-//                .map(new Func1<String, Integer>() {
-//                    @Override
-//                    public Integer call(String s) {
-//                        return s.length();
-//                    }
-//                })
+//        Observable.just(5, 2, 3, 3, 2, 1, 4)
+//                .distinct()
 //                .subscribeOn(Schedulers.newThread())
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(new Subscriber<Integer>() {
@@ -79,9 +88,12 @@ public class MainActivity extends AppCompatActivity {
 //
 //                    @Override
 //                    public void onNext(Integer i) {
-//                        System.out.println("Letters in word: " + i);
+//                        System.out.println("Item: " + i);
 //                    }
 //                });
+
+
+
     }
 
     @Override
