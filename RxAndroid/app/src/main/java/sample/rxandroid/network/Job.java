@@ -11,7 +11,7 @@ import java.util.List;
 public class Job {
 
     @SerializedName("id")
-    int id;
+    String id;
 
     @SerializedName("position_title")
     String positionTitle;
@@ -40,7 +40,7 @@ public class Job {
     @SerializedName("url")
     String url;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -79,4 +79,6 @@ public class Job {
     public String getUrl() {
         return url;
     }
+
+
 }

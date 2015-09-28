@@ -5,12 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import sample.rxandroid.R;
+import sample.rxandroid.network.Job;
 import sample.rxandroid.network.RestApi;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,33 +21,46 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RestApi.initialize();
+        RestApi.searchJobs("nursing+jobs+in+ny", new Callback<List<Job>>() {
+            @Override
+            public void success(List<Job> jobs, Response response) {
+                System.out.println("Jobs found: " + jobs.size());
+                for(Job job : jobs) {
+                    System.out.println(job.getId());
+                }
+            }
 
-        Observable.just("one", "two", "three", "four", "five")
-                .map(new Func1<String, Integer>() {
-                    @Override
-                    public Integer call(String s) {
-                        return s.length();
-                    }
-                })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Integer>() {
-                    @Override
-                    public void onCompleted() {
-                        System.out.println("Completed");
-                    }
+            @Override
+            public void failure(RetrofitError error) {
+                System.out.println("error:" + error.getMessage());
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer i) {
-                        System.out.println("Letters in word: " + i);
-                    }
-                });
+//        Observable.just("one", "two", "three", "four", "five")
+//                .map(new Func1<String, Integer>() {
+//                    @Override
+//                    public Integer call(String s) {
+//                        return s.length();
+//                    }
+//                })
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Integer>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        System.out.println("Completed");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Integer i) {
+//                        System.out.println("Letters in word: " + i);
+//                    }
+//                });
     }
 
     @Override

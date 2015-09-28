@@ -1,10 +1,15 @@
 package sample.rxandroid.network;
 
-import com.squareup.okhttp.OkHttpClient;
+import android.util.Log;
 
-import java.util.concurrent.TimeUnit;
+import com.google.gson.GsonBuilder;
 
-import retrofit.Retrofit;
+import java.util.Date;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 /**
  * Created by romantolmachev on 25/9/15.
@@ -15,16 +20,28 @@ public class RestApi {
 
     public static void initialize() {
 
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setReadTimeout(3, TimeUnit.MINUTES);
-        okHttpClient.setWriteTimeout(3, TimeUnit.MINUTES);
-        okHttpClient.setConnectTimeout(3, TimeUnit.MINUTES);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Urls.ENDPOINT)
-                .client(okHttpClient)
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Urls.ENDPOINT)
+                .setLog(new RestAdapter.Log() {
+                    @Override
+                    public void log(String s) {
+                        Log.d("CLIENT API", s);
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(new GsonConverter(new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create()))
                 .build();
 
-        service = retrofit.create(RestApiDefinitions.class);
+        service = restAdapter.create(RestApiDefinitions.class);
+    }
+
+//    public static Observable<List<Job>> searchJobs(String searchQuery) {
+//
+//        return service.getJobs(searchQuery);
+//    }
+
+    public static void searchJobs(String searchQuery, Callback<List<Job>> callback) {
+
+        service.getJobs(searchQuery, callback);
     }
 }
