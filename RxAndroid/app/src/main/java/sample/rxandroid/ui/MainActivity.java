@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.subjects.PublishSubject;
@@ -58,11 +59,23 @@ public class MainActivity extends AppCompatActivity {
                 new Func2<SearchViewQueryTextEvent, String, String>() {
                     @Override
                     public String call(SearchViewQueryTextEvent searchViewQueryTextEvent, String state) {
-                        return queryEditText.getQuery().toString() + "+jobs+in+" + state;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(jobsAdapter != null) {
+                                    jobsAdapter.clearJobs();
+                                }
+                            }
+                        });
+
+                        return searchViewQueryTextEvent.queryText() + "+jobs+in+" + state;
                     }
                 }
 
         )
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<CharSequence, Observable<List<Job>>>() {
                     @Override
                     public Observable<List<Job>> call(CharSequence query) {
@@ -83,12 +96,25 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        System.out.println("Error: " + e.getMessage());
                     }
 
                     @Override
-                    public void onNext(Job job) {
+                    public void onNext(final Job job) {
+
                         System.out.println("Job found: " + job.getPositionTitle());
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (jobsAdapter != null) {
+                                    jobsAdapter.addJob(job);
+                                    jobsAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+
+
                     }
                 });
 

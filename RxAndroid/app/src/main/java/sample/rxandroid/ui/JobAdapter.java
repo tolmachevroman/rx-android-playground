@@ -1,6 +1,6 @@
 package sample.rxandroid.ui;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +12,21 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Observer;
 import sample.rxandroid.R;
 import sample.rxandroid.network.Job;
 
 /**
  * Created by romantolmachev on 7/10/15.
  */
-public class JobAdapter extends BaseAdapter implements Observer<Job> {
+public class JobAdapter extends BaseAdapter {
 
     private ArrayList<Job> jobs;
 
     private final LayoutInflater inflater;
 
-    public JobAdapter(@NonNull Context context) {
+    private Activity context;
+
+    public JobAdapter(@NonNull Activity context) {
         this.jobs = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
     }
@@ -45,29 +46,12 @@ public class JobAdapter extends BaseAdapter implements Observer<Job> {
         return 0;
     }
 
-    @Override
-    public void onCompleted() {
-
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
-    public void onNext(Job job) {
-        System.out.println("onNext Thread: " + Thread.currentThread());
-        System.out.println("Adding job to JobAdapter: " + job.getPositionTitle());
-        this.jobs.add(job);
-
-
-
-        notifyDataSetChanged();
+    public void addJob(Job job) {
+        jobs.add(job);
     }
 
     public void clearJobs() {
-        this.jobs = new ArrayList<>();
+        jobs.clear();
     }
 
     @Override

@@ -23,10 +23,10 @@ public class Job {
     String rateIntervalCode;
 
     @SerializedName("minimum")
-    int minimum;
+    float minimum;
 
     @SerializedName("maximum")
-    int maximum;
+    float maximum;
 
     @SerializedName("start_date")
     Date startDate;
@@ -56,11 +56,11 @@ public class Job {
         return rateIntervalCode;
     }
 
-    public int getMinimum() {
+    public float getMinimum() {
         return minimum;
     }
 
-    public int getMaximum() {
+    public float getMaximum() {
         return maximum;
     }
 
