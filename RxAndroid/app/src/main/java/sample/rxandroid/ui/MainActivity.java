@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.List;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.us_states_list)
     Spinner usStatesList;
 
+    @Bind(R.id.jobs_list)
+    ListView jobsList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +46,10 @@ public class MainActivity extends AppCompatActivity {
         final BehaviorSubject<String> query = BehaviorSubject.create(queryEditText.getText().toString());
         queryEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -77,12 +79,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-//                .flatMap(new Func1<List<Job>, Observable<Job>>() {
-//                    @Override
-//                    public Observable<Job> call(List<Job> jobs) {
-//                        return Observable.from(jobs);
-//                    }
-//                })
 //                .filter(new Func1<Job, Boolean>() {
 //                    @Override
 //                    public Boolean call(Job job) {
