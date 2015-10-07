@@ -7,7 +7,6 @@ import com.google.gson.GsonBuilder;
 import java.util.Date;
 import java.util.List;
 
-import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 import rx.Observable;
@@ -41,8 +40,4 @@ public class RestApi {
         return service.getJobs(searchQuery);
     }
 
-    public static void searchJobs(String searchQuery, Callback<List<Job>> callback) {
-
-        service.getJobs(searchQuery, callback);
-    }
 }
