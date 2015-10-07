@@ -28,6 +28,8 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex:rxjava:1.0.14'
 
+    compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
+
     //Retrofit related dependencies
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'

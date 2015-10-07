@@ -2,25 +2,26 @@ package sample.rxandroid.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
+import com.jakewharton.rxbinding.widget.RxSearchView;
+import com.jakewharton.rxbinding.widget.SearchViewQueryTextEvent;
+
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import rx.Subscriber;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
+import rx.functions.Func2;
+import rx.subjects.PublishSubject;
 import sample.rxandroid.R;
 import sample.rxandroid.network.Job;
 import sample.rxandroid.network.RestApi;
@@ -28,13 +29,15 @@ import sample.rxandroid.network.RestApi;
 public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.query_edit_text)
-    EditText queryEditText;
+    SearchView queryEditText;
 
     @Bind(R.id.us_states_list)
     Spinner usStatesList;
 
     @Bind(R.id.jobs_list)
     ListView jobsList;
+
+    JobAdapter jobsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,27 +46,27 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        final BehaviorSubject<String> query = BehaviorSubject.create(queryEditText.getText().toString());
-        queryEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        jobsAdapter = new JobAdapter(this);
+        jobsList.setAdapter(jobsAdapter);
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        Observable.combineLatest(
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                query.onNext(editable.toString());
-            }
-        });
+                RxSearchView.queryTextChangeEvents(queryEditText),
 
-        query.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .sample(2, TimeUnit.SECONDS)
-                .flatMap(new Func1<String, Observable<List<Job>>>() {
+                observeSelect(usStatesList),
+
+                new Func2<SearchViewQueryTextEvent, String, String>() {
                     @Override
-                    public Observable<List<Job>> call(String s) {
-                        return RestApi.searchJobs("nursing+jobs", usStatesList.getSelectedItem().toString());
+                    public String call(SearchViewQueryTextEvent searchViewQueryTextEvent, String state) {
+                        return queryEditText.getQuery().toString() + "+jobs+in+" + state;
+                    }
+                }
+
+        )
+                .flatMap(new Func1<CharSequence, Observable<List<Job>>>() {
+                    @Override
+                    public Observable<List<Job>> call(CharSequence query) {
+                        return RestApi.searchJobs(query.toString());
                     }
                 })
                 .flatMap(new Func1<List<Job>, Observable<Job>>() {
@@ -72,9 +75,19 @@ public class MainActivity extends AppCompatActivity {
                         return Observable.from(jobs);
                     }
                 })
-                .subscribe(new Action1<Job>() {
+                .subscribe(new Subscriber<Job>() {
                     @Override
-                    public void call(Job job) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Job job) {
                         System.out.println("Job found: " + job.getPositionTitle());
                     }
                 });
@@ -85,23 +98,27 @@ public class MainActivity extends AppCompatActivity {
 //                        return job.getMinimum() > 50000;
 //                    }
 //                })
-//                .subscribe(new Subscriber<Job>() {
-//                    @Override
-//                    public void onCompleted() {
 //
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Job job) {
-//                        System.out.println("Job: " + job.getPositionTitle());
-//                    }
-//                });
 
+    }
+
+    public static Observable<String> observeSelect(Spinner spinner) {
+        final PublishSubject<String> selectSubject = PublishSubject.create();
+        // for production code, unsubscribe, UI thread assertions are needed
+        // see WidgetObservable from rxandroid for example
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = (String) parent.getItemAtPosition(position);
+                selectSubject.onNext(item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        return selectSubject;
     }
 
     @Override
