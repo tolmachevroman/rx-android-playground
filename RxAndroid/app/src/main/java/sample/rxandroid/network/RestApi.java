@@ -35,9 +35,9 @@ public class RestApi {
         service = restAdapter.create(RestApiDefinitions.class);
     }
 
-    public static Observable<List<Job>> searchJobs(String searchQuery) {
+    public static Observable<List<Job>> searchJobs(String searchQuery, String state) {
 
-        return service.getJobs(searchQuery);
+        return service.getJobs(searchQuery + "+in+" + state);
     }
 
 }
