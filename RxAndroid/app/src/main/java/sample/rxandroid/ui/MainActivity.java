@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         query.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .sample(2, TimeUnit.SECONDS)
                 .flatMap(new Func1<String, Observable<List<Job>>>() {
                     @Override
                     public Observable<List<Job>> call(String s) {
