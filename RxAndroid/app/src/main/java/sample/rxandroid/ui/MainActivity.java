@@ -63,12 +63,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public String call(SearchViewQueryTextEvent searchViewQueryTextEvent, AdapterViewSelectionEvent adapterViewSelectionEvent) {
 
-                        //Current thread: Thread[main,5,main]
+                        //Thread: main
+
+                        //Clear jobs list
                         if (jobsAdapter != null) {
                             jobsAdapter.clearJobs();
                             jobsAdapter.notifyDataSetChanged();
                         }
 
+                        //Hide jobs list and show progress bar
                         jobsList.setVisibility(View.GONE);
                         progressBar.setVisibility(View.VISIBLE);
 
@@ -86,6 +89,20 @@ public class MainActivity extends AppCompatActivity {
                 .flatMap(new Func1<List<Job>, Observable<Job>>() {
                     @Override
                     public Observable<Job> call(List<Job> jobs) {
+
+                        //Thread: Retrofit-Idle
+
+                        //Hide progress bar and show jobs list
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                progressBar.setVisibility(View.GONE);
+                                jobsList.setVisibility(View.VISIBLE);
+
+                            }
+                        });
+
                         return Observable.from(jobs);
                     }
                 })
@@ -105,13 +122,12 @@ public class MainActivity extends AppCompatActivity {
 
                         System.out.println("Job found: " + job.getPositionTitle());
 
-                        //Current thread: Thread[Retrofit-Idle,5,main]
+                        //Thread: Retrofit-Idle
+
+                        //Add a job to the list
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
-                                progressBar.setVisibility(View.GONE);
-                                jobsList.setVisibility(View.VISIBLE);
 
                                 if (jobsAdapter != null) {
                                     jobsAdapter.addJob(job);
@@ -120,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-
 
                     }
                 });
