@@ -6,8 +6,10 @@
     <string name="job_sample_query">Nurse, teacher…</string>
 
     <string name="salary_from_minimum_to_maximum">Salary from $minimum to $maximum</string>
+    <string name="salary_unspecified">Salary unspecified</string>
 
     <string name="open_from_date_to_date">Open from startDate to endDate</string>
+    <string name="open_dates_unspecified">Open dates unspecified</string>
 
     <string name="per_hour">per hour</string>
     <string name="per_month">per month</string>
