@@ -8,10 +8,10 @@
     android:orientation="vertical">
 
     <SearchView
-        android:id="@+id/query_edit_text"
+        android:id="@+id/query_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/job_sample_query"/>
+        android:queryHint="@string/job_sample_query"/>
 
     <Spinner
         android:id="@+id/us_states_list"
