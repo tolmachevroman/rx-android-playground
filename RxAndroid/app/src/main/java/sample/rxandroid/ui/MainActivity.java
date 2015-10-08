@@ -147,14 +147,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-//                .filter(new Func1<Job, Boolean>() {
-//                    @Override
-//                    public Boolean call(Job job) {
-//                        return job.getMinimum() > 50000;
-//                    }
-//                })
-//
-
     }
 
     @Override
