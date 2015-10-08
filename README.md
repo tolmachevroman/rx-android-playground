@@ -133,4 +133,5 @@ We could make it more complicated, and add filtering by salary and rate interval
 ### Useful reading:
 
 [ReactiveX Operators](http://reactivex.io/documentation/operators.html)
+
 [ReactiveX Tutorials](http://reactivex.io/tutorials.html)
