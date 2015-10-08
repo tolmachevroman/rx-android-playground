@@ -14,13 +14,13 @@ RxJava is about streams of events. In our case, events can be query update, or a
 
 User typed query string **or** US state selected -> API request -> process and show the results
 
-1) RxAndroid (as for October '15) provides useful shortcuts to listen to UI changes and emit different `Observable`, depending on what UI element it is. Using `.combineLatest()` we can listen to multuple UI widgets even if just one of it emits it's `Observable`.
+1) RxAndroid (as for October '15) provides useful shortcuts to listen to UI changes and emit different `Observable`, depending on what UI element it is. Using `.combineLatest()` we can listen to multuple UI widgets even if just one of it emits events at one given moment.
 
--> 2) On the next step we should clear previous results and emit `String` which we'll use with API request
+-> 2) We then receive `SearchViewQueryTextEvent` or `AdapterViewSelectionEvent` events and emit `String` which we'll use with API request
 
--> 3) API request, which emits `Observable<List<Job>>`
+-> 3) Perform API request, which emits `Observable<List<Job>>`
 
--> 4) we extract single `Observable<Job>` out of the `Observable<List<Job>>` and finally pass it to the Subscriber
+-> 4) We then extract single `Observable<Job>` out of the `Observable<List<Job>>` and finally pass it to the Subscriber
 
 -> 5) Add `Job` one by one to the Adapter
 
@@ -132,4 +132,5 @@ We could make it more complicated, and add filtering by salary and rate interval
 
 ### Useful reading:
 
-[Reactive Programming in the Netflix API with RxJava](http://techblog.netflix.com/2013/02/rxjava-netflix-api.html)
+[ReactiveX Operators](http://reactivex.io/documentation/operators.html)
+[ReactiveX Tutorials](http://reactivex.io/tutorials.html)
