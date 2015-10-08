@@ -1,10 +1,13 @@
 package sample.rxandroid.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -27,7 +30,7 @@ import sample.rxandroid.R;
 import sample.rxandroid.network.Job;
 import sample.rxandroid.network.RestApi;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Bind(R.id.query_search_view)
     SearchView querySearchView;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         jobsAdapter = new JobAdapter(this);
         jobsList.setAdapter(jobsAdapter);
+        jobsList.setOnItemClickListener(this);
 
         Observable.combineLatest(
 
@@ -124,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onNext(final Job job) {
 
-                        System.out.println("Job found: " + job.getPositionTitle());
-
                         /**
                          * Thread: Retrofit-Idle
                          *
@@ -147,6 +149,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Job job = (Job) adapterView.getItemAtPosition(position);
+        if(job.getUrl() != null) {
+            startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(job.getUrl())));
+        }
     }
 
     @Override
