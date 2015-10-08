@@ -63,16 +63,17 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public String call(SearchViewQueryTextEvent searchViewQueryTextEvent, AdapterViewSelectionEvent adapterViewSelectionEvent) {
 
-                        //Thread: main
+                        /**
+                         * Thread: main
+                         *
+                         * We need to clear previously loaded jobs list and show progress bar
+                         */
 
-                        //Clear jobs list
                         if (jobsAdapter != null) {
                             jobsAdapter.clearJobs();
                             jobsAdapter.notifyDataSetChanged();
                         }
 
-                        //Hide jobs list and show progress bar
-                        jobsList.setVisibility(View.GONE);
                         progressBar.setVisibility(View.VISIBLE);
 
                         return searchViewQueryTextEvent.queryText() + "+jobs+in+" + adapterViewSelectionEvent.view().getSelectedItem();
@@ -90,9 +91,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public Observable<Job> call(List<Job> jobs) {
 
-                        //Thread: Retrofit-Idle
+                        /**
+                         * Thread: Retrofit-Idle
+                         *
+                         * We need to hide progress bar and show jobs list
+                         */
 
-                        //Hide progress bar and show jobs list
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -122,9 +126,12 @@ public class MainActivity extends AppCompatActivity {
 
                         System.out.println("Job found: " + job.getPositionTitle());
 
-                        //Thread: Retrofit-Idle
+                        /**
+                         * Thread: Retrofit-Idle
+                         *
+                         * We add jobs one by one to the list
+                         */
 
-                        //Add a job to the list
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
