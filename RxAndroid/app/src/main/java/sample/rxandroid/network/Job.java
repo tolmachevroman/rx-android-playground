@@ -20,7 +20,7 @@ public class Job {
     String organizationName;
 
     @SerializedName("rate_interval_code")
-    String rateIntervalCode;
+    RateIntervalCode rateIntervalCode;
 
     @SerializedName("minimum")
     float minimum;
@@ -52,7 +52,7 @@ public class Job {
         return organizationName;
     }
 
-    public String getRateIntervalCode() {
+    public RateIntervalCode getRateIntervalCode() {
         return rateIntervalCode;
     }
 
