@@ -7,6 +7,8 @@
 
     <string name="salary_from_minimum_to_maximum">Salary from $minimum to $maximum</string>
 
+    <string name="open_from_date_to_date">Open from startDate to endDate</string>
+
     <string-array name="us_states_names">
         <item>Alabama</item>
         <item>Alaska</item>

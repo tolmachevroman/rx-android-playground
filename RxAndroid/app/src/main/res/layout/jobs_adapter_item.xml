@@ -23,4 +23,12 @@
         android:textSize="14sp"
         android:layout_marginTop="8dp"/>
 
+    <TextView
+        android:id="@+id/job_open_dates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#444444"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"/>
+
 </LinearLayout>

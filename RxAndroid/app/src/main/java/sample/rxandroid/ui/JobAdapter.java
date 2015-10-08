@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +30,9 @@ public class JobAdapter extends BaseAdapter {
     private String salaryMinimumMaximum;
     private DecimalFormat decimalFormat;
 
+    private String openDates;
+    private SimpleDateFormat dateFormat;
+
     public JobAdapter(@NonNull Context context) {
         this.jobs = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
@@ -37,6 +42,8 @@ public class JobAdapter extends BaseAdapter {
         this.decimalFormat.setGroupingSize(3);
         this.decimalFormat.setGroupingUsed(true);
 
+        this.openDates = context.getString(R.string.open_from_date_to_date);
+        this.dateFormat = new SimpleDateFormat("dd MMM", Locale.US);
     }
 
     @Override
@@ -75,11 +82,19 @@ public class JobAdapter extends BaseAdapter {
         }
 
         String jobTitle = getItem(position).getPositionTitle();
-        holder.jobTitle.setText( jobTitle.substring(0, 1).toUpperCase() + jobTitle.substring(1, jobTitle.length()).toLowerCase());
+        holder.jobTitle.setText(jobTitle.substring(0, 1).toUpperCase() + jobTitle.substring(1, jobTitle.length()).toLowerCase());
 
         String jobSalary = salaryMinimumMaximum.replace("minimum", decimalFormat.format(getItem(position).getMinimum()))
                 .replace("maximum", decimalFormat.format(getItem(position).getMaximum()));
-        holder.jobSalary.setText( jobSalary );
+        holder.jobSalary.setText(jobSalary);
+
+        if (getItem(position).getStartDate() != null && getItem(position).getEndDate() != null) {
+
+            String jobOpenDates = openDates.replace("startDate", dateFormat.format(getItem(position).getStartDate())).
+                    replace("endDate", dateFormat.format(getItem(position).getEndDate()));
+            holder.jobOpenDates.setText(jobOpenDates);
+
+        }
 
         return convertView;
     }
@@ -91,6 +106,9 @@ public class JobAdapter extends BaseAdapter {
 
         @Bind(R.id.job_salary)
         TextView jobSalary;
+
+        @Bind(R.id.job_open_dates)
+        TextView jobOpenDates;
 
         public ViewHolder(View v) {
             ButterKnife.bind(this, v);
