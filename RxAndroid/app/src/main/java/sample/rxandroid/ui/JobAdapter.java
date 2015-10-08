@@ -1,6 +1,6 @@
 package sample.rxandroid.ui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -24,11 +25,18 @@ public class JobAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
 
-    private Activity context;
+    private String minimumMaximum;
+    private DecimalFormat decimalFormat;
 
-    public JobAdapter(@NonNull Activity context) {
+    public JobAdapter(@NonNull Context context) {
         this.jobs = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
+        this.minimumMaximum = context.getString(R.string.from_minimum_to_maximum);
+
+        this.decimalFormat = new DecimalFormat("0");
+        this.decimalFormat.setGroupingSize(3);
+        this.decimalFormat.setGroupingUsed(true);
+
     }
 
     @Override
@@ -69,6 +77,10 @@ public class JobAdapter extends BaseAdapter {
         String jobTitle = getItem(position).getPositionTitle();
         holder.jobTitle.setText( jobTitle.substring(0, 1).toUpperCase() + jobTitle.substring(1, jobTitle.length()).toLowerCase());
 
+        String jobSalary = minimumMaximum.replace("minimum", decimalFormat.format(getItem(position).getMinimum()))
+                .replace("maximum", decimalFormat.format(getItem(position).getMaximum()));
+        holder.jobSalary.setText( jobSalary );
+
         return convertView;
     }
 
@@ -76,6 +88,9 @@ public class JobAdapter extends BaseAdapter {
 
         @Bind(R.id.job_title)
         TextView jobTitle;
+
+        @Bind(R.id.job_salary)
+        TextView jobSalary;
 
         public ViewHolder(View v) {
             ButterKnife.bind(this, v);

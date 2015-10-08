@@ -4,6 +4,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="job_sample_query">Nurse, teacher…</string>
+    
+    <string name="from_minimum_to_maximum">From $minimum to $maximum</string>
 
     <string-array name="us_states_names">
         <item>Alabama</item>

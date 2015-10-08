@@ -11,7 +11,16 @@
         android:id="@+id/job_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#333333"
+        android:textColor="#222222"
         android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/job_salary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#444444"
+        android:textSize="14sp"
+        android:layout_below="@+id/job_title"
+        android:layout_marginTop="8dp"/>
 
 </RelativeLayout>
