@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.jobs_list)
     ListView jobsList;
 
+    @Bind(R.id.progress_bar)
+    ProgressBar progressBar;
+
     JobAdapter jobsAdapter;
 
     @Override
@@ -63,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                             jobsAdapter.clearJobs();
                             jobsAdapter.notifyDataSetChanged();
                         }
+
+                        jobsList.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.VISIBLE);
 
                         return searchViewQueryTextEvent.queryText() + "+jobs+in+" + adapterViewSelectionEvent.view().getSelectedItem();
 
@@ -101,10 +109,15 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
+                                progressBar.setVisibility(View.GONE);
+                                jobsList.setVisibility(View.VISIBLE);
+
                                 if (jobsAdapter != null) {
                                     jobsAdapter.addJob(job);
                                     jobsAdapter.notifyDataSetChanged();
                                 }
+
                             }
                         });
 
