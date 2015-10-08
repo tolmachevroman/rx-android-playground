@@ -19,7 +19,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import sample.rxandroid.R;
@@ -70,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         )
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<CharSequence, Observable<List<Job>>>() {
                     @Override
                     public Observable<List<Job>> call(CharSequence query) {
