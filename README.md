@@ -22,7 +22,7 @@ User typed query string **or** US state selected -> API request -> process and s
 
 -> 4) We then extract single `Observable<Job>` out of the `Observable<List<Job>>` and finally pass it to the Subscriber
 
--> 5) Add `Job` one by one to the Adapter
+-> 5) Add jobs one by one to the Adapter
 
 The full Observable code is shown below.
 
