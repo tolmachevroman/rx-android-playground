@@ -2,9 +2,9 @@
 
 This project is an example of RxJava+RxAndroid usage. So let's say we want to search through the jobs (teacher, nurse etc) per state (California, Ohio etc.) available via [US Jobs search API](http://search.digitalgov.gov/developer/jobs.html#using-the-api). In the simplest case we need an input field and US states list, and we want to load jobs on either query or state change: 
 
-![First screenshot](https://cloud.githubusercontent.com/assets/560815/10375534/6f5cc8ba-6dcf-11e5-83fc-9cffc5132015.png)
+![First screenshot](https://cloud.githubusercontent.com/assets/560815/10376673/89b996f6-6dd5-11e5-8bc2-5afdacfee2c5.png)
 
-![Second screenshot](https://cloud.githubusercontent.com/assets/560815/10375535/6f5f21b4-6dcf-11e5-8053-31edc5872773.png)
+![Second screenshot](https://cloud.githubusercontent.com/assets/560815/10376674/8ae36c5a-6dd5-11e5-86ab-f76f3ad27045.png)
 
 RxJava is about streams of events. In our case, events can be query update, or another state selected, which then should perform API request with given query/state, and show the results:
 
