@@ -5,7 +5,7 @@
 
     <string name="job_sample_query">Nurse, teacher…</string>
 
-    <string name="from_minimum_to_maximum">From $minimum to $maximum</string>
+    <string name="salary_from_minimum_to_maximum">Salary from $minimum to $maximum</string>
 
     <string-array name="us_states_names">
         <item>Alabama</item>

@@ -25,13 +25,13 @@ public class JobAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
 
-    private String minimumMaximum;
+    private String salaryMinimumMaximum;
     private DecimalFormat decimalFormat;
 
     public JobAdapter(@NonNull Context context) {
         this.jobs = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
-        this.minimumMaximum = context.getString(R.string.from_minimum_to_maximum);
+        this.salaryMinimumMaximum = context.getString(R.string.salary_from_minimum_to_maximum);
 
         this.decimalFormat = new DecimalFormat("0");
         this.decimalFormat.setGroupingSize(3);
@@ -77,7 +77,7 @@ public class JobAdapter extends BaseAdapter {
         String jobTitle = getItem(position).getPositionTitle();
         holder.jobTitle.setText( jobTitle.substring(0, 1).toUpperCase() + jobTitle.substring(1, jobTitle.length()).toLowerCase());
 
-        String jobSalary = minimumMaximum.replace("minimum", decimalFormat.format(getItem(position).getMinimum()))
+        String jobSalary = salaryMinimumMaximum.replace("minimum", decimalFormat.format(getItem(position).getMinimum()))
                 .replace("maximum", decimalFormat.format(getItem(position).getMaximum()));
         holder.jobSalary.setText( jobSalary );
 
