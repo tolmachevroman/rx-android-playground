@@ -1,6 +1,10 @@
 ## Sample Android app using RxJava and RxAndroid
 
-This project is an example of RxJava+RxAndroid usage. So let's say we want to search through the jobs (teacher, nurse etc) per state (California, Ohio etc.) available via [US Jobs search API](http://search.digitalgov.gov/developer/jobs.html#using-the-api). In the simplest case we need an input field and US states list, and we want to load jobs on either query or state change: 
+This project is an example of RxJava+RxAndroid usage. 
+
+*In my opinion, while RxJava is a great tool and concept, it's usage in Android is far from obvious. ContentProviders use Observer pattern already when requery data on change, and we rarely need some complicated filtering in mobile apps. That said, I do believe that knowing RxAndroid can simplify life in some cases.* 
+
+So let's say we want to search through the jobs (teacher, nurse etc) per state (California, Ohio etc.) available via [US Jobs search API](http://search.digitalgov.gov/developer/jobs.html#using-the-api). In the simplest case we need an input field and US states list, and we want to load jobs on either query or state change: 
 
 ![First screenshot](https://cloud.githubusercontent.com/assets/560815/10376673/89b996f6-6dd5-11e5-8bc2-5afdacfee2c5.png)
 
