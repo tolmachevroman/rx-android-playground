@@ -66,7 +66,8 @@ public class JobAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.jobTitle.setText(getItem(position).getPositionTitle());
+        String jobTitle = getItem(position).getPositionTitle();
+        holder.jobTitle.setText( jobTitle.substring(0, 1).toUpperCase() + jobTitle.substring(1, jobTitle.length()).toLowerCase());
 
         return convertView;
     }
